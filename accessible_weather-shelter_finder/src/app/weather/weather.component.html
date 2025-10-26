@@ -1,0 +1,99 @@
+<div class="card-body">
+  <div class="container">
+    <h1><b>Current weather Details</b></h1>
+  </div>
+  <div class="weather-card">
+
+    <div class="card-header">
+      <h2 class="location-name">{{ getLocation?.name }}</h2>
+      <p class="location-country">{{ getLocation?.country }}</p>
+      <p class="location-lat">{{ getLocation?.lat }}||{{ getLocation?.lon }}</p>
+      <p class="location-lon"></p>
+    </div>
+
+    <div class="card-body">
+      <p class="temperature">{{ getCurrent?.temp_c }}<span class="unit">°C</span></p>
+    </div>
+
+    <div class="card-details">
+      <div class="detail-item">
+        <span class="label">Fahrenheit</span>
+        <span class="value">{{ getCurrent?.temp_f }} °F</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">Humidity</span>
+        <span class="value">{{ getCurrent?.humidity }}%</span>
+      </div>
+
+    </div>
+
+    <div class="card-details">
+      <div class="detail-item">
+        <span class="label">Wind</span>
+        <span class="value">{{ getCurrent?.wind_kph }} kph</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">UV</span>
+        <span class="value">{{ getCurrent?.uv }}%</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="containerForecast">
+  <h1><b>Weather Forecast</b></h1>
+</div>
+
+<div class="forecast-section">
+  <div class="forecast-cards-container">
+    <div class="forecast-card" *ngFor="let day of getForecastDay">
+      <div class="forecast-card-header">
+        <span class="forecast-date">{{ day.date }}</span>
+        <span class="forecast-condition">{{ day.day?.condition?.text }}</span>
+      </div>
+      <div class="forecast-card-details">
+        <div class="detail">
+          <span class="label">Max Temp:</span>
+          <span class="value">{{ day.day?.maxtemp_c }}°C</span>
+        </div>
+        <div class="detail">
+          <span class="label">Min Temp:</span>
+          <span class="value">{{ day.day?.mintemp_c }}°C</span>
+        </div>
+        <div class="detail">
+          <span class="label">Humidity:</span>
+          <span class="value">{{ day.day?.avghumidity }}%</span>
+        </div>
+        <div class="detail" *ngIf="day.astro">
+          <span class="label">Sunrise:</span>
+          <span class="value">{{ day.astro.sunrise }}</span>
+        </div>
+        <div class="detail" *ngIf="day.astro">
+          <span class="label">Sunset:</span>
+          <span class="value">{{ day.astro.sunset }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="containerAlerts">
+  <h1><b>Weather Alerts</b></h1>
+</div>
+
+<div class="alerts-section">
+  <div class="alert-card" *ngFor="let alert of getAlert">
+    <div class="alert-card-header">
+      <span class="alert-headline">{{ alert.headline }}</span>
+    </div>
+    <div class="alert-card-body">
+      <p class="alert-message">{{ alert.msgType }}</p>
+      <p class="alert-severity">Severity: {{ alert.severity }}</p>
+      <p class="alert-urgency">Urgency: {{ alert.urgency }}</p>
+      <p class="alert-description">{{ alert.desc }}</p>
+      <p class="alert-instruction">{{ alert.instruction }}</p>
+    </div>
+  </div>
+</div>

@@ -24,11 +24,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { WeatherComponent } from './weather/weather.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    WeatherComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -51,8 +54,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatFormFieldModule,
     MatDialogModule,
     MatSnackBarModule,
-    MatTooltipModule,
-    MatProgressSpinnerModule
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]
