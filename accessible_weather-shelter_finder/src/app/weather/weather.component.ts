@@ -16,15 +16,28 @@ import { Alert } from '../class/alert';
 export class WeatherComponent implements OnInit {
 
   ngOnInit(): void {
-    // Initial actions can be performed here
-    this.fetchWeatherByCity('New York');
-    this.fetchForecastByCity('New York', 5);
-    this.fetchAlertsByCity('New York');
+    this.onSearch('');
   }
   title = 'accessible_weather-shelter_finder';
 
 
   constructor(private weatherService: WeatherService) { }
+
+  // set default city until user searches for a city
+  tempSearchTerm: string = 'New York';
+ onSearch(searchTerm: string): void {
+  const city = searchTerm && searchTerm.trim() ? searchTerm.trim() : 'New York';
+  this.tempSearchTerm = city;
+  console.log("You searched for:", city);
+  this.fetchWeatherByCity(city);
+  this.fetchForecastByCity(city, 4);
+  this.fetchAlertsByCity(city);
+  // input field will be cleared after search
+  this.tempSearchTerm = '';
+
+}
+
+
   // Variables to store specific parts of the response
   getLocation: Location | undefined
   getCurrent: CurrentWeather | undefined;
@@ -93,13 +106,13 @@ export class WeatherComponent implements OnInit {
   fetchAlertsByCity(cityName: string) {
     this.weatherService.getWeatherAlertsByCity(cityName).subscribe({
       next: (alertsResponse) => {
-        console.log('Weather alerts data:', alertsResponse);
+        // console.log('Weather alerts data:', alertsResponse);
         this.getFetchedAlerts = alertsResponse;
         this.getAlerts = this.getFetchedAlerts.alerts;
-        console.log('Weather Alerts:', this.getAlerts);
+        // console.log('Weather Alerts:', this.getAlerts);
         this.getAlert = this.getAlerts.alert;
         this.getAlert.forEach((alert: any) => {
-        console.log('Alert:', alert);
+          // console.log('Alert:', alert);
         });
       },
       error: (error) => {

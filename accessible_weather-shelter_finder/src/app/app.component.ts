@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,10 +10,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
 
-  ngOnInit(): void {  }
+  ngOnInit(): void {
+  }
 
   title = 'accessible_weather-shelter_finder';
 
-
   constructor() { }
+
+
 }

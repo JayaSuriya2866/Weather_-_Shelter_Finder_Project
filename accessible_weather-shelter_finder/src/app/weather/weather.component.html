@@ -1,3 +1,11 @@
+<div class="search-container">
+  <input type="text" class="search-input" placeholder="Search here..." [(ngModel)]="tempSearchTerm" #searchInput
+    (keyup.enter)="onSearch(searchInput.value)">
+
+  <button class="search-button" (click)="onSearch(searchInput.value)">
+    Search
+  </button>
+</div>
 <div class="card-body">
   <div class="container">
     <h1><b>Current weather Details</b></h1>
