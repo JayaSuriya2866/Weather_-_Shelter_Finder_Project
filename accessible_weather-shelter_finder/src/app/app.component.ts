@@ -10,12 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
 
+  constructor() { }
+
   ngOnInit(): void {
   }
-
   title = 'accessible_weather-shelter_finder';
-
-  constructor() { }
 
 
 }

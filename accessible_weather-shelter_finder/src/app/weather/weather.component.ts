@@ -4,6 +4,7 @@ import { CurrentWeather } from '../class/currentWeather'
 import { Location } from '../class/location';
 import { Forecastday } from '../class/forecastday';
 import { Alert } from '../class/alert';
+import { take } from 'rxjs';
 
 
 
@@ -16,6 +17,19 @@ import { Alert } from '../class/alert';
 export class WeatherComponent implements OnInit {
 
   ngOnInit(): void {
+    // geolocation
+    this.weatherService.getPosition()
+    .pipe(take(1))
+    .subscribe({
+      next: (coords: GeolocationCoordinates) => {
+        this.fetchWeatherByCoords(coords.latitude, coords.longitude);
+      },
+      error: (err: GeolocationPositionError | Error) => {
+        console.error('Error getting location: ', err.message);
+        this.onSearch(''); 
+      }
+    });
+    // user input search
     this.onSearch('');
   }
   title = 'accessible_weather-shelter_finder';
@@ -25,17 +39,17 @@ export class WeatherComponent implements OnInit {
 
   // set default city until user searches for a city
   tempSearchTerm: string = 'New York';
- onSearch(searchTerm: string): void {
-  const city = searchTerm && searchTerm.trim() ? searchTerm.trim() : 'New York';
-  this.tempSearchTerm = city;
-  console.log("You searched for:", city);
-  this.fetchWeatherByCity(city);
-  this.fetchForecastByCity(city, 4);
-  this.fetchAlertsByCity(city);
-  // input field will be cleared after search
-  this.tempSearchTerm = '';
+  onSearch(searchTerm: string): void {
+    const city = searchTerm && searchTerm.trim() ? searchTerm.trim() : 'New York';
+    this.tempSearchTerm = city;
+    console.log("You searched for:", city);
+    this.fetchWeatherByCity(city);
+    this.fetchForecastByCity(city, 5);
+    this.fetchAlertsByCity(city);
+    // input field will be cleared after search
+    this.tempSearchTerm = '';
+  }
 
-}
 
 
   // Variables to store specific parts of the response
@@ -49,6 +63,28 @@ export class WeatherComponent implements OnInit {
   getFetchedForecast: any;
   getFetchedAlerts: any;
 
+  fetchWeatherByCoords(lat: number, lon: number) {
+  this.weatherService.getCurrentWeatherByCoords(lat, lon).subscribe({
+    next: (weatherResponse) => {
+      this.getFetchedWeather = weatherResponse;
+      this.getLocation = this.getFetchedWeather.location;
+      this.getCurrent = this.getFetchedWeather.current;
+    },
+    error: (error) => {
+      console.error('Error fetching weather data by coords:', error);
+    }
+  });
+
+  this.weatherService.getWeatherForecastByCoords(lat, lon, 5).subscribe({
+    next: (forecastResponse) => {
+      this.getFetchedForecast = forecastResponse;
+      this.getForecastDay = this.getFetchedForecast.forecast.forecastday;
+    },
+    error: (error) => {
+      console.error('Error fetching forecast by coords:', error);
+    }
+  });
+}
 
   fetchWeatherByCity(cityName: string) {
     this.weatherService.getCurrentWeatherByCity(cityName).subscribe({
@@ -76,7 +112,6 @@ export class WeatherComponent implements OnInit {
   }
 
 
-
   fetchForecastByCity(cityName: string, days: number) {
     this.weatherService.getWeatherForecastByCity(cityName, days).subscribe({
       next: (forecastResponse) => {
@@ -102,6 +137,7 @@ export class WeatherComponent implements OnInit {
       }
     });
   }
+
 
   fetchAlertsByCity(cityName: string) {
     this.weatherService.getWeatherAlertsByCity(cityName).subscribe({
