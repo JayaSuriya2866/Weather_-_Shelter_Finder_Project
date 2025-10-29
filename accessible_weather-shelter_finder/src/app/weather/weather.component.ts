@@ -16,6 +16,9 @@ import { take } from 'rxjs';
 })
 export class WeatherComponent implements OnInit {
 
+  voices: SpeechSynthesisVoice[] = [];
+  selectedVoice: SpeechSynthesisVoice | null = null;
+
   ngOnInit(): void {
     // geolocation
     this.weatherService.getPosition()
@@ -31,6 +34,11 @@ export class WeatherComponent implements OnInit {
       });
     // user input search
     this.onSearch('');
+    this.loadVoices();
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => this.loadVoices();
+    }
+
   }
   title = 'accessible_weather-shelter_finder';
 
@@ -87,7 +95,7 @@ export class WeatherComponent implements OnInit {
     });
   }
 
-  
+
   fetchWeatherByCity(cityName: string) {
     this.weatherService.getCurrentWeatherByCity(cityName).subscribe({
       next: (weatherResponse) => {
@@ -157,5 +165,83 @@ export class WeatherComponent implements OnInit {
         console.error('Error fetching weather alerts data:', error);
       }
     });
+  }
+
+
+
+  loadVoices() {
+    if ('speechSynthesis' in window) {
+      this.voices = window.speechSynthesis.getVoices();
+      if (this.voices.length && !this.selectedVoice) {
+        this.selectedVoice = this.voices[0];
+      }
+    }
+  }
+  onVoiceChange(event: any) {
+  }
+
+
+
+  popupMessage: string = '';
+  popupFontSize: number = 18;
+  popupDarkTheme: boolean = true;
+  isTTSPaused: boolean = false;
+
+  showPopup(message: string) {
+    this.popupMessage = message;
+  }
+
+  hidePopup() {
+    this.popupMessage = '';
+  }
+
+  togglePopupTheme() {
+    this.popupDarkTheme = !this.popupDarkTheme;
+  }
+
+  increasePopupFont() {
+    if (this.popupFontSize < 36) this.popupFontSize += 2;
+  }
+
+  decreasePopupFont() {
+    if (this.popupFontSize > 12) this.popupFontSize -= 2;
+  }
+
+  togglePauseResumeTTS() {
+    if ('speechSynthesis' in window) {
+      if (window.speechSynthesis.speaking) {
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+          this.isTTSPaused = false;
+        } else {
+          window.speechSynthesis.pause();
+          this.isTTSPaused = true;
+        }
+      }
+    }
+  }
+
+  speak(text: string) {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      this.isTTSPaused = false;
+      const utterance = new SpeechSynthesisUtterance(text);
+      if (this.selectedVoice) {
+        utterance.voice = this.selectedVoice;
+      }
+      utterance.onend = () => {
+        this.hidePopup();
+        this.isTTSPaused = false;
+      };
+      utterance.onerror = () => {
+        this.hidePopup();
+        this.isTTSPaused = false;
+      };
+      window.speechSynthesis.speak(utterance);
+      this.showPopup('🔊 ' + text);
+    } else {
+      this.showPopup('Text-to-speech not supported in this browser.');
+      setTimeout(() => this.hidePopup(), 4000);
+    }
   }
 }

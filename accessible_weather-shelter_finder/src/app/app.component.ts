@@ -16,5 +16,14 @@ export class AppComponent implements OnInit {
   }
   title = 'accessible_weather-shelter_finder';
 
+  isDarkTheme = false;
 
+  toggleTheme() {
+    this.isDarkTheme = !this.isDarkTheme;
+    if (this.isDarkTheme) {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
+    }
+  }
 }

@@ -1,8 +1,8 @@
-<body>
+<header>
+    <h1>Weather Shelter Finder</h1>
+</header>
 
-    <header>
-        <h1>Weather Shelter Finder</h1>
-    </header>
+<body>
 
     <main>
         <section class="intro">
@@ -10,8 +10,19 @@
             <p>Use this application to locate weather shelters in your vicinity during adverse weather conditions.</p>
         </section>
     </main>
-  
+
     <div class="content">
+        <div class="emergency-btn-container">
+            <a href="tel:9014467847" class="emergency-btn" aria-label="Call Emergency 911">
+                🚨 Emergency Call 911
+            </a>
+            <a href="tel:9014467847" class="home-btn" aria-label="Call Home">
+                🏠 Call Home
+            </a>
+            <button class="shelter-btn" aria-label="Find Near My Shelter">
+                🏨 Find Near My Shelter
+            </button>
+        </div>
         <app-weather></app-weather>
     </div>
     <footer>

@@ -6,6 +6,25 @@
     Search
   </button>
 </div>
+<div *ngIf="popupMessage" class="tts-popup-banner" [ngClass]="{'dark': popupDarkTheme}">
+  <button class="popup-close-btn" aria-label="Close banner" (click)="hidePopup()">✖</button>
+  <button class="popup-theme-btn" aria-label="Toggle banner theme" (click)="togglePopupTheme()">
+    {{ popupDarkTheme ? '🌞' : '🌙' }}
+  </button>
+  <button class="popup-font-btn" aria-label="Decrease font size" (click)="decreasePopupFont()">A-</button>
+  <button class="popup-font-btn" aria-label="Increase font size" (click)="increasePopupFont()">A+</button>
+  <button class="popup-tts-btn" aria-label="Pause or resume speech" (click)="togglePauseResumeTTS()">
+    {{ isTTSPaused ? '▶️' : '⏸️' }}
+  </button>
+  <span [style.fontSize.px]="popupFontSize">{{ popupMessage }}</span>
+</div>
+<div class="voice-select-container">
+  <label for="voiceSelect" class="voice-label"><b>Voice:</b></label>
+  <select id="voiceSelect" class="voice-select" [(ngModel)]="selectedVoice" (change)="onVoiceChange($event)">
+    <option *ngFor="let voice of voices" [ngValue]="voice">{{ voice.name }} ({{ voice.lang }})</option>
+  </select>
+</div>
+
 <div class="card-body">
   <div class="container">
     <h1><b>Current weather Details</b></h1>
@@ -46,6 +65,15 @@
       </div>
     </div>
 
+    <div class="card-details">
+      <div class="card-header">
+        <button class="tts-btn" aria-label="Read current weather"
+          (click)="speak('Current weather in ' + getLocation?.name + getLocation?.country +', temperature ' + getCurrent?.temp_c + 
+          ' degrees Celsius, fahrenheit ' + getCurrent?.temp_f + ' temperature fahrenheit, humidity ' + getCurrent?.humidity + ' percent, wind ' + getCurrent?.wind_kph + ' kilometers per hour.')">
+          🔊
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -81,10 +109,18 @@
           <span class="label">Sunset:</span>
           <span class="value">{{ day.astro.sunset }}</span>
         </div>
+        <div class="forecast-card-header">
+          <button class="tts-btn" aria-label="Read forecast"
+            (click)="speak('Forecast for ' + day.date + ': ' + day.day?.condition?.text + ', max temperature ' + day.day?.maxtemp_c + ' degrees, min temperature ' + day.day?.mintemp_c + ' degrees, humidity ' + day.day?.avghumidity + ' percent.')">
+            🔊
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+
 
 
 <div class="containerAlerts">
@@ -102,6 +138,12 @@
       <p class="alert-urgency">Urgency: {{ alert.urgency }}</p>
       <p class="alert-description">{{ alert.desc }}</p>
       <p class="alert-instruction">{{ alert.instruction }}</p>
+    </div>
+    <div class="alert-card-header">
+      <button class="tts-btn" aria-label="Read alert"
+        (click)="speak('Alert: ' + alert.headline + '. Severity: ' + alert.severity + '. Description: ' + alert.desc)">
+        🔊
+      </button>
     </div>
   </div>
 </div>
