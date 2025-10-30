@@ -38,7 +38,7 @@ export class WeatherComponent implements OnInit {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.onvoiceschanged = () => this.loadVoices();
     }
-
+    window.addEventListener('keydown', this.handleKeydown.bind(this));
   }
   title = 'accessible_weather-shelter_finder';
 
@@ -58,7 +58,9 @@ export class WeatherComponent implements OnInit {
     this.tempSearchTerm = '';
   }
 
-
+  ngOnDestroy(): void {
+    window.removeEventListener('keydown', this.handleKeydown.bind(this));
+  }
 
   // Variables to store specific parts of the response
   getLocation: Location | undefined
@@ -193,6 +195,10 @@ export class WeatherComponent implements OnInit {
 
   hidePopup() {
     this.popupMessage = '';
+     if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    this.isTTSPaused = false;
+  }
   }
 
   togglePopupTheme() {
@@ -242,6 +248,40 @@ export class WeatherComponent implements OnInit {
     } else {
       this.showPopup('Text-to-speech not supported in this browser.');
       setTimeout(() => this.hidePopup(), 4000);
+    }
+  }
+
+  handleKeydown(event: KeyboardEvent) {
+    if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+      return;
+    }
+    const key = event.key.toLowerCase();
+    if (key === 'c') {
+      this.speak(
+        'Current weather in ' + this.getLocation?.name + ', ' +
+        'temperature ' + this.getCurrent?.temp_c + ' degrees Celsius, ' +
+        'humidity ' + this.getCurrent?.humidity + ' percent, ' +
+        'wind ' + this.getCurrent?.wind_kph + ' kilometers per hour.'
+      );
+    } else if (['1', '2', '3', '4', '5'].includes(key)) {
+      const idx = parseInt(key, 10) - 1;
+      if (this.getForecastDay && this.getForecastDay[idx]) {
+        const day = this.getForecastDay[idx];
+        this.speak(
+          'Forecast for ' + day.date + ': ' + day.day?.condition?.text +
+          ', max temperature ' + day.day?.maxtemp_c + ' degrees, min temperature ' +
+          day.day?.mintemp_c + ' degrees, humidity ' + day.day?.avghumidity + ' percent.'
+        );
+      }
+    } else if (key === 'a') {
+      if (this.getAlert && this.getAlert.length > 0) {
+        const alert = this.getAlert[0];
+        this.speak(
+          'Alert: ' + alert.headline +
+          '. Severity: ' + alert.severity +
+          '. Description: ' + alert.desc
+        );
+      }
     }
   }
 }
