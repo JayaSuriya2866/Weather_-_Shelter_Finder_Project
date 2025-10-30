@@ -1,117 +1,68 @@
-Here is a `README.md` file based on the details you provided. You can copy and paste the text below directly into a file named `README.md` in your project's root directory.
+Hear Way Sight
 
------
+An accessible-first weather application built with Angular 16, designed to provide clear and usable weather information for everyone, including users of assistive technologies. This application fetches data from WeatherAPI.com.
 
-````markdown
-# Accessible Weather Shelter
+Project Description
 
-An accessible web application built with **Angular 16 Standalone components** to provide critical weather information for blind and visually impaired people.
+The primary goal of Accessible Weather Shelter is to ensure blind and visually impaired individuals can independently and safely find, navigate, and use emergency weather shelters. It provides critical, accessible, non-visual guidance and information during severe weather events.
 
-This project analyzes current and forecasted weather data, presenting it through a clean UI and an essential **auditorial methodology (Text-to-Speech)**. In the event of severe weather, the app is designed to audibly alert the user and help them locate nearby shelters.
+Many standard weather and emergency applications rely on purely visual cues (like interactive maps, colors, and icons) that create significant barriers for users with visual impairments. This project addresses that critical gap.
 
----
 
-## 🚀 Core Features
+Features
 
-* **Real-Time Weather Data**: Displays the current weather conditions and a 6-day forecast by integrating with the [WeatherAPI.com](https://www.weatherapi.com/) service.
-* **Accessibility First (A11y)**: Designed specifically for blind and visually impaired users.
-    * **Text-to-Speech (TTS)**: All critical weather information is converted to audio.
-    * **Semantic HTML & ARIA**: Built with proper HTML structure and ARIA attributes for screen reader compatibility.
-    * **Keyboard Navigation**: Fully navigable using a keyboard.
-* **Severe Weather Alerts**: The app analyzes weather conditions for natural disasters, heavy rain, or other dangerous events.
-* **Emergency Shelter Locator**: When a severe weather alert is active, the app will:
-    1.  Immediately report the danger to the user via TTS.
-    2.  Request the user's current location.
-    3.  Display and announce nearby emergency shelters.
+Current Weather: Get real-time weather conditions for any city,location.
 
----
+Weather Forecast: View a multi-day forecast.
 
-## 🛠️ Tech Stack
+Integrated Text-to-Speech (TTS): This feature uses the SpeechSynthesis API to read alerts and shelter details aloud only when the user requests.
 
-* **Frontend**: [Angular 16+](https://angular.io/)
-    * **Standalone Components**: Built using Angular's modern, module-less standalone component architecture.
-    * **Angular Router**: For navigating between app views.
-    * **HttpClient**: For making requests to the weather API.
-* **API**: [WeatherAPI.com](https://www.weatherapi.com/)
-* **Accessibility**:
-    * Web Speech API (SpeechSynthesis) for Text-to-Speech.
-    * Browser Geolocation API for finding the user's location.
+Dual API Support: Includes services for both OpenWeather and WeatherAPI.com.
 
----
+Responsive Design: Usable on all screen sizes, from mobile to desktop.
 
-## 📦 Getting Started
+Accessibility-First: Built from the ground up with accessibility in mind.
 
-### Prerequisites
 
-* [Node.js](https://nodejs.org/) (v18.10 or later)
-* [Angular CLI](https://angular.io/cli) (`npm install -g @angular/cli`)
-* A free API Key from [WeatherAPI.com](https://www.weatherapi.com/signup.aspx)
+Tech Stack
 
-### Installation & Setup
+Framework: Angular 16
 
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/your-username/accessible-weather-shelter.git](https://github.com/your-username/accessible-weather-shelter.git)
-    cd accessible-weather-shelter
-    ```
+Language: TypeScript
 
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
+API: WeatherAPI.com API
 
-3.  **Configure API Key:**
-    * Create a file named `environment.ts` in the `src/environments/` directory.
-    * Add your API key to this file:
+HTTP Client: Angular HttpClientModule
 
-    ```typescript
-    // src/environments/environment.ts
-    export const environment = {
-      production: false,
-      weatherApiKey: 'YOUR_API_KEY_HERE'
-    };
-    ```
+Styling: CSS & media query to made application reponsive
 
-### Running the Development Server
 
-Run the following command to start the app.
+References 
 
-```bash
-ng serve
-````
+https://github.com/JayaSuriya24/NIIT-Submission-Project
+https://github.com/JayaSuriya24/git-github.com-JayaSuriya24-FrontEndContentManagementSystem
 
-Navigate to `http://localhost:4200/` in your browser. The app will automatically reload if you change any of the source files.
+https://github.com/JayaSuriya24/git-github.com-JayaSuriya24-ConyentManagementSystem
 
------
 
-## 🏗️ Project Structure
+Looking for the reference TTS etc.
 
-This project uses Angular 16 Standalone components, so you will not find `NgModule` files. Components, directives, and pipes are imported directly where they are needed.
 
-```
-/src
-├── /app
-│   ├── /components
-│   │   ├── /current-weather
-│   │   ├── /forecast
-│   │   └── /shelter-locator
-│   ├── /services
-│   │   ├── /weather.service.ts     # Handles WeatherAPI calls
-│   │   └── /tts.service.ts         # Manages Text-to-Speech
-│   ├── /models
-│   │   └── /weather.model.ts       # TypeScript interfaces for API data
-│   ├── app.component.ts            # Main app component
-│   ├── app.config.ts               # App configuration (routes, providers)
-│   └── app.routes.ts               # App routing
-├── /assets
-│   └── /icons
-├── /environments
-│   ├── environment.ts
-│   └── environment.development.ts
-├── index.html
-├── main.ts
-└── styles.scss
-```
+Development server
 
-```
-```
+Run ng serve for a dev server. Navigate to http://localhost:4200/. The application will automatically reload if you change any of the source files.
+
+Code scaffolding
+Run ng generate component component-name to generate a new component. You can also use ng generate directive|pipe|service|class|guard|interface|enum|module.
+
+Build
+Run ng build to build the project. The build artifacts will be stored in the dist/ directory.
+
+Running unit tests
+Run ng test to execute the unit tests via Karma.
+
+Running end-to-end tests
+Run ng e2e to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+
+Further help
+To get more help on the Angular CLI use ng help or go check out the Angular CLI Overview and Command Reference page.
